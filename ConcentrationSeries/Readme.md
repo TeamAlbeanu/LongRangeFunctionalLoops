@@ -17,5 +17,7 @@ muscimol: trials after muscimol was added
 
 ## Code:
 Generalization to novel concentrations: SVM_OdorGeneralizer.m
+
 Odor Identity and concentration calling: SVM_IdentityAndConcentrationCalling.m
+
 Concentration invariant odor recognition: SVM_ConcInvariantOdorRecognition.m
