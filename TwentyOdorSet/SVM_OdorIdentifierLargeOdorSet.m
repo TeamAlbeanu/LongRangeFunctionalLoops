@@ -29,7 +29,7 @@ for test = 1:nRep
         for k = 1:ncategory
             Output(k,k:ncategory:end) = 1;
         end
-        Output = repmat(Output,[1 nrep]);
+        Output = repmat(Output,[1 nrep]);% desired classifier target
 
         if doPlot
             figure;
