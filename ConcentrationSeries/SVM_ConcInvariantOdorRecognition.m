@@ -31,10 +31,10 @@ CellNum = 10:5:ncells;
 % CellNum = 200;
 
 nboot = 10;
-GENERAL_PERF_Pre = zeros(20,length(CellNum),4,nboot,5);
-GENERAL_PERF_Mus = zeros(20,length(CellNum),4,nboot,5);
+GENERAL_PERF_Pre = zeros(20,length(CellNum),4,nboot,5);%PreMuscimol classifier output: time points X number of neuron bins X repeats X bootstraps x five odorants
+GENERAL_PERF_Mus = zeros(20,length(CellNum),4,nboot,5);%PostMuscimol classifier output: time points X number of neuron bins X repeats X bootstraps x five odorants
 tic
-for t = 3:20
+for t = 3:20 %ignore the first two timepoints (~400 ms because of odor latency)
     t
     RESPCUBE_Pre = squeeze(CUMCUBEPre(t,:,:,1:4));
     x = reshape(RESPCUBE_Pre,[ncells 5 4 4]); 
@@ -64,7 +64,7 @@ for t = 3:20
         for k = 1:ncategory
             Output(k,k:ncategory:end) = 1;
         end
-        Output = repmat(Output,[1 nrep]);
+        Output = repmat(Output,[1 nrep]);% desired classifier target
                 
         for CellIter = 1:length(CellNum)
             PERF = zeros(nboot,2,5);            
@@ -102,7 +102,7 @@ for t = 3:20
 end
 
 %% PLOTTING ------------------------------------
-load('TC_SVC_Poly_noRetraining')
+load('TC_SVC_Poly_noRetraining')%load saved classifier output data for TC from previous section
 TCperf_pre = squeeze(nanmean(GENERAL_PERF_Pre,3));
 TCperf_mus = squeeze(nanmean(GENERAL_PERF_Mus,3));
 
@@ -124,7 +124,7 @@ for j = 1:5
 end
 colormap('jet')
 
-load('MC_SVC_Poly_noRetraining')
+load('MC_SVC_Poly_noRetraining')%load saved classifier output data for MC from previous section
 MCperf_pre = squeeze(nanmean(GENERAL_PERF_Pre,3));
 MCperf_mus = squeeze(nanmean(GENERAL_PERF_Mus,3));
 
