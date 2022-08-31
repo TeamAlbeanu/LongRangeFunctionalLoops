@@ -7,14 +7,14 @@ load([dataPath 'MitralCellsPreMuscimol.mat'])
 CUMCUBEMus=CumulativeCube(:,:,:,1:4);
 
 ncells = size(CumulativeCube,2);
-CellNum = 10:5:ncells;
+CellNum = 10:5:ncells; %evaluated for different numbers of neurons in steps of five.
 
 nboot = 10;
 
-GENERAL_PERF_Pre = zeros(20,length(CellNum),4,nboot);
-GENERAL_PERF_Mus = zeros(20,length(CellNum),4,nboot);
+GENERAL_PERF_Pre = zeros(20,length(CellNum),4,nboot); %PreMuscimol classifier output: time points X number of neuron bins X repeats X bootstraps
+GENERAL_PERF_Mus = zeros(20,length(CellNum),4,nboot); %PostMuscimol classifier output: time points X number of neuron bins X repeats X bootstraps
 
-for t = 3:20
+for t = 3:20 %ignore the first two timepoints (~400 ms because of odor latency)
     t
     RESPCUBE_Pre = squeeze(CUMCUBEPre(t,:,:,1:4));
     x = reshape(RESPCUBE_Pre,[ncells 5 4 4]); 
@@ -45,7 +45,7 @@ for t = 3:20
         for k = 1:ncategory
             Output(k,k:ncategory:end) = [1 2 3 4];
         end
-        Output = repmat(Output,[1 nTrainRep]);
+        Output = repmat(Output,[1 nTrainRep]); % desired classifier target
 
         for CellIter = 1:length(CellNum)
             PERF = zeros(nboot,2);            
@@ -82,7 +82,9 @@ for t = 3:20
 end
 
 
-%%
+%% Plotting code
+
+
 figure;hold on;
 temp1 = reshape(GENERAL_PERF_Pre,[20 size(CellNum,2) 4*10]);
 temp2 = reshape(GENERAL_PERF_Mus,[20 size(CellNum,2) 4*10]);
